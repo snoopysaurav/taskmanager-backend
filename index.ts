@@ -1,6 +1,7 @@
-import express, { Express, Request, Response, Router } from "express";
+import express, { Express } from "express";
 import dotenv from "dotenv";
 import taskRouter from "./routes/task.route";
+import { AppDatasource } from "./models/datasource";
 
 dotenv.config();
 const port = process.env.PORT;
@@ -11,7 +12,16 @@ app.use(express.json());
 
 app.use(taskRouter);
 
-// server
-app.listen(port, () => {
-  console.log(`App running at ${port}`);
-});
+// Database conn
+AppDatasource.initialize()
+  .then(() => {
+    console.log(`Database source has been initalized`);
+
+    // Server
+    app.listen(port, () => {
+      console.log(`App running at ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.log("Error during database initalization", err);
+  });

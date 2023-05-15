@@ -3,11 +3,11 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class Task {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
-  @Column()
-  name: string;
+  @Column("text")
+  name?: string;
 
-  @Column()
-  description: string;
+  @Column("text")
+  description?: string;
 }

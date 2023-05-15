@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm/data-source";
+import { DataSource } from "typeorm";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -11,13 +11,5 @@ const AppDatasource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 });
-
-AppDatasource.initialize()
-  .then(() => {
-    console.log(`Database source has been initalized`);
-  })
-  .catch((err) => {
-    console.log("Error during database initalization", err);
-  });
 
 export { AppDatasource };
