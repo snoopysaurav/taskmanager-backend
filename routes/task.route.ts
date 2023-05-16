@@ -9,7 +9,7 @@ import {
 
 const taskRouter = Router();
 
-taskRouter.route("/api/v1").get(getAllTask).post(postTask);
-taskRouter.route("api/v1/:id").get(getTask).put(updateTask).delete(deleteTask);
+taskRouter.route("/task").get(getAllTask).post(postTask);
+taskRouter.route("/task/:id").get(getTask).put(updateTask).delete(deleteTask);
 
 export default taskRouter;
