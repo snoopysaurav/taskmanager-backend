@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { AppDatasource } from "../models/datasource";
 import { Task } from "../models/task.entity";
-import { Any } from "typeorm";
 
 const taskRepository = AppDatasource.getRepository(Task);
 
@@ -9,9 +8,9 @@ const taskRepository = AppDatasource.getRepository(Task);
 const getAllTask = async (req: Request, res: Response) => {
   const task = await taskRepository.find();
   if (!task.length) {
-    res.status(404).send({ msg: `You haven't added any task yet` });
+    res.send({ msg: `You haven't added any task yet` });
   }
-  res.status(200).send(task);
+  res.send(task);
 };
 
 // Get Single Task
@@ -19,7 +18,7 @@ const getTask = async (req: Request, res: Response) => {
   const task = await taskRepository.findOneBy({
     id: Number(req.params.id),
   });
-  res.status(200).send(task);
+  res.send(task);
 };
 
 // Create Task
@@ -39,6 +38,16 @@ const postTask = async (req: Request, res: Response) => {
 // Update Task
 const updateTask = async (req: Request, res: Response) => {
   try {
+    const task: any = await taskRepository.findOneBy({
+      id: Number(req.params.id),
+    });
+
+    task.name = req.body.name;
+    task.description = req.body.description;
+
+    await taskRepository.save(task);
+    res.send(task);
+    console.log(`Updated task with id ${req.params.id}`);
   } catch (error) {
     res.send(`Unable to update task..`);
     console.log(error);
