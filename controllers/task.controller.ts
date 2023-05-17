@@ -8,9 +8,9 @@ const taskRepository = AppDatasource.getRepository(Task);
 const getAllTask = async (req: Request, res: Response) => {
   const task = await taskRepository.find();
   if (!task.length) {
-    res.send({ msg: `You haven't added any task yet` });
+    return res.send({ msg: `You haven't added any task yet` });
   }
-  res.send(task);
+  return res.send(task);
 };
 
 // Get Single Task
@@ -18,7 +18,7 @@ const getTask = async (req: Request, res: Response) => {
   const task = await taskRepository.findOneBy({
     id: Number(req.params.id),
   });
-  res.send(task);
+  return res.send(task);
 };
 
 // Create Task
@@ -29,10 +29,10 @@ const postTask = async (req: Request, res: Response) => {
     task.description = req.body.description;
 
     await taskRepository.save(task);
-    res.send(`Added task successfully`);
+    return res.send(`Added task successfully`);
   } catch (error) {
-    res.send(`Unable to add task..`);
     console.log(error);
+    return res.send(`Unable to add task..`);
   }
 };
 // Update Task
@@ -46,11 +46,11 @@ const updateTask = async (req: Request, res: Response) => {
     task.description = req.body.description;
 
     await taskRepository.save(task);
-    res.send(task);
     console.log(`Updated task with id ${req.params.id}`);
+    return res.send(task);
   } catch (error) {
-    res.send(`Unable to update task..`);
     console.log(error);
+    return res.send(`Unable to update task..`);
   }
 };
 
@@ -62,11 +62,11 @@ const deleteTask = async (req: Request, res: Response) => {
     });
 
     await taskRepository.remove(task);
-    res.send(task);
     console.log(`Deleted task with id: ${req.params.id}`);
+    return res.send(task);
   } catch (error) {
-    res.send(`Unable to delete task..`);
     console.log(error);
+    return res.send(`Unable to delete task..`);
   }
 };
 
