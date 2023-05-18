@@ -32,7 +32,7 @@ const postTask = async (req: Request, res: Response) => {
     task.description = req.body.description;
 
     await taskRepository.save(task);
-    return res.send(`Added task successfully`);
+    return res.status(201).json({ msg: `Added task successfully` });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: `Unable to add task..` });

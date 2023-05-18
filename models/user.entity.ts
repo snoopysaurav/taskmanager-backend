@@ -1,18 +1,18 @@
-import {
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  Unique,
-} from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: Number;
 
-  @Column({ unique: true })
+  @Column({ unique: true, length: 20 })
   username: String;
+
+  @Column({ length: 30 })
+  firstname: String;
+
+  @Column({ length: 30 })
+  lastname: String;
 
   @Column({ unique: true })
   email: String;
