@@ -1,7 +1,7 @@
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
-import { Task } from "./task.entity";
-import { User } from "./user.entity";
+import { TaskEntity } from "./task.entity";
+import { UserEntity } from "./user.entity";
 
 dotenv.config();
 
@@ -12,7 +12,7 @@ const AppDatasource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [Task, User],
+  entities: [TaskEntity, UserEntity],
   synchronize: true,
 });
 

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { AppDatasource } from "../models/datasource";
-import { Task } from "../models/task.entity";
+import { TaskEntity } from "../models/task.entity";
 
-const taskRepository = AppDatasource.getRepository(Task);
+const taskRepository = AppDatasource.getRepository(TaskEntity);
 
 // Get all Task
 const getAllTask = async (req: Request, res: Response) => {
@@ -27,7 +27,7 @@ const getTask = async (req: Request, res: Response) => {
 // Create Task
 const postTask = async (req: Request, res: Response) => {
   try {
-    const task = new Task();
+    const task = new TaskEntity();
     task.name = req.body.name;
     task.description = req.body.description;
 
