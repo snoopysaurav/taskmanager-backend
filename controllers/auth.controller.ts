@@ -14,13 +14,12 @@ const AuthRepository = AppDatasource.getRepository(UserEntity);
 // Signup
 const signup = async (req: Request, res: Response) => {
   try {
-    const user = new UserEntity();
-
     // Validation
     const { error, value } = await signupValidation.validateAsync(req.body);
     if (error) {
       return res.status(400).json({ msg: `Validation Error` });
     } else {
+      const user = new UserEntity();
       // check if email or username exist or not
       const isEmailExist = await AuthRepository.findOneBy({
         email: req.body.email,

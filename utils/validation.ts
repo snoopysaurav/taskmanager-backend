@@ -15,7 +15,7 @@ const signupValidation = Joi.object({
   lastname: Joi.string().min(3).max(12).required(),
   username: Joi.string().min(5).max(10).case("lower").required(),
   email: Joi.string().email().required(),
-  password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")).required(),
+  password: Joi.string().required(),
 });
 
 export { taskValidation, signinValidation, signupValidation };

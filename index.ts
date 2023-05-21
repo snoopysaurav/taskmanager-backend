@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import taskRouter from "./routes/task.route";
 import { AppDatasource } from "./models/datasource";
 import authRouter from "./routes/auth.route";
+import authMiddleware from "./middlewares/auth.middleware";
 
 dotenv.config();
 const port = process.env.PORT;
@@ -11,7 +12,7 @@ const app: Express = express();
 
 app.use(express.json());
 
-app.use(taskRouter);
+app.use(authMiddleware, taskRouter);
 app.use(authRouter);
 
 // Database conn
