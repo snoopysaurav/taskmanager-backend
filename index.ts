@@ -1,9 +1,11 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
-import taskRouter from "./routes/task.route";
-import { AppDatasource } from "./models/datasource";
-import authRouter from "./routes/auth.route";
-import authMiddleware from "./middlewares/auth.middleware";
+import taskRouter from "./src/routes/task.route";
+import { AppDatasource } from "./src/models/datasource";
+import authRouter from "./src/routes/auth.route";
+import authMiddleware from "./src/middlewares/auth.middleware";
+import rolesMiddleware from "./src/middlewares/roles.middlewares";
+import adminMiddleware from "./src/middlewares/roles.middlewares";
 
 dotenv.config();
 const port = process.env.PORT;
@@ -13,7 +15,7 @@ const app: Express = express();
 app.use(express.json());
 
 app.use(authRouter);
-app.use(authMiddleware, taskRouter);
+app.use(authMiddleware, adminMiddleware, taskRouter);
 
 // Database conn
 AppDatasource.initialize()
