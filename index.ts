@@ -15,7 +15,7 @@ const app: Express = express();
 app.use(express.json());
 
 app.use(authRouter);
-app.use(authMiddleware, adminMiddleware, taskRouter);
+app.use(authMiddleware, /*adminMiddleware,*/ taskRouter);
 
 // Database conn
 AppDatasource.initialize()

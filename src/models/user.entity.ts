@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { TaskEntity } from "./task.entity";
+
+enum Role {
+  USER = "user",
+  ADMIN = "admin",
+}
 
 @Entity()
 export class UserEntity {
@@ -19,4 +25,10 @@ export class UserEntity {
 
   @Column()
   password: String;
+
+  @Column({ type: "enum", enum: Role, default: Role.USER })
+  role: Role;
+
+  @OneToMany(() => TaskEntity, (task) => task.user)
+  task: TaskEntity[];
 }
