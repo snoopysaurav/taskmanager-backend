@@ -1,21 +1,20 @@
 import { NextFunction, Request, Response } from "express";
 
+interface AdminRequest extends Request {
+  user: any;
+}
 const adminMiddleware = async (
-  req: Request,
+  req: AdminRequest,
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const isAuth = req.headers.authorization;
-    if (!isAuth) return res.status(400).json(`Unauthorized Role..`);
-    const role = req.body.role;
-    if (role === "admin") {
-      next();
-    }
-    return res.status(400).json(`Access Denied...`);
-  } catch (error) {
-    return res.status(500).json(error);
-  }
+  console.log(req.user);
+  // if (!["admin"].includes(req.user.role)) {
+  //   return res
+  //     .status(401)
+  //     .json({ status: false, message: "Only Admin can access" });
+  // }
+  next();
 };
 
 export default adminMiddleware;

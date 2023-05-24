@@ -16,6 +16,7 @@ const signupValidation = Joi.object({
   username: Joi.string().min(5).max(10).case("lower").required(),
   email: Joi.string().email().required(),
   password: Joi.string().required(),
+  role: Joi.string().required(),
 });
 
 export { taskValidation, signinValidation, signupValidation };

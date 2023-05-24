@@ -4,7 +4,6 @@ import taskRouter from "./src/routes/task.route";
 import { AppDatasource } from "./src/models/datasource";
 import authRouter from "./src/routes/auth.route";
 import authMiddleware from "./src/middlewares/auth.middleware";
-import rolesMiddleware from "./src/middlewares/roles.middlewares";
 import adminMiddleware from "./src/middlewares/roles.middlewares";
 
 dotenv.config();
@@ -15,7 +14,7 @@ const app: Express = express();
 app.use(express.json());
 
 app.use(authRouter);
-app.use(authMiddleware, /*adminMiddleware,*/ taskRouter);
+app.use(authMiddleware, adminMiddleware, taskRouter);
 
 // Database conn
 AppDatasource.initialize()
