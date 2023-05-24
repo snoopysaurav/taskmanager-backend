@@ -9,11 +9,11 @@ const adminMiddleware = async (
   next: NextFunction
 ) => {
   console.log(req.user);
-  // if (!["admin"].includes(req.user.role)) {
-  //   return res
-  //     .status(401)
-  //     .json({ status: false, message: "Only Admin can access" });
-  // }
+  if (!req.user.role.includes("admin")) {
+    return res
+      .status(401)
+      .json({ status: false, message: "Only Admin can access" });
+  }
   next();
 };
 
