@@ -2,8 +2,14 @@ import { Request, Response } from "express";
 import { AppDatasource } from "../models/datasource";
 import { TaskEntity } from "../models/task.entity";
 import { taskValidation } from "../utils/validation";
+import { UserEntity } from "../models/user.entity";
 
 const taskRepository = AppDatasource.getRepository(TaskEntity);
+const authRepository = AppDatasource.getRepository(UserEntity);
+
+interface userRequest extends Request {
+  user: any;
+}
 
 // Get all Task
 const getAllTask = async (req: Request, res: Response) => {
@@ -30,9 +36,13 @@ const getTask = async (req: Request, res: Response) => {
 };
 
 // Create Task
-const postTask = async (req: Request, res: Response) => {
+const postTask = async (req: userRequest, res: Response) => {
   try {
     const task = new TaskEntity();
+    const id = req.user.id;
+    const user = await authRepository.findOne({
+      where: { id },
+    });
 
     // Validation
     const { error, value } = await taskValidation.validateAsync(req.body);
@@ -41,6 +51,7 @@ const postTask = async (req: Request, res: Response) => {
     } else {
       task.name = req.body.name;
       task.description = req.body.description;
+      task.user = user;
 
       await taskRepository.save(task);
       return res.status(201).json({ msg: `Added task successfully` });
