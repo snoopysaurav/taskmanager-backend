@@ -8,8 +8,11 @@ const AuthRepository = AppDatasource.getRepository(UserEntity);
 
 dotenv.config();
 
+interface adminRequest extends Request {
+  user: any;
+}
 const authMiddleware = async (
-  req: Request,
+  req: adminRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -31,7 +34,7 @@ const authMiddleware = async (
     if (!user) {
       return res.status(400).json("invalid");
     }
-    req.body.id = user.id;
+    req.user = user;
     next();
   } catch (error) {
     return res.status(500).json(error);
