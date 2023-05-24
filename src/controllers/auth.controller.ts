@@ -41,6 +41,7 @@ const signup = async (req: Request, res: Response) => {
         user.lastname = req.body.lastname;
         user.username = req.body.username;
         user.email = req.body.email;
+        user.role = req.body.role;
         user.password = hashedPassword;
 
         await AuthRepository.save(user);

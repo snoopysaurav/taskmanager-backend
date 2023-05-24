@@ -7,7 +7,11 @@ const taskRepository = AppDatasource.getRepository(TaskEntity);
 
 // Get all Task
 const getAllTask = async (req: Request, res: Response) => {
-  const task = await taskRepository.find();
+  const task = await taskRepository.find({
+    relations: {
+      user: true,
+    },
+  });
   if (!task.length) {
     return res.status(400).json({ msg: `You haven't added any task yet` });
   }
