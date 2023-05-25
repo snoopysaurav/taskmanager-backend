@@ -133,6 +133,8 @@ const getUser = async (req: Request, res: Response) => {
   }
 };
 
+// Delete User
+
 const deleteUser = async (req: Request, res: Response) => {
   try {
     const user = await AuthRepository.findOne({
@@ -156,4 +158,4 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-export { signin, signup, getAllUser, getUser };
+export { signin, signup, getAllUser, getUser, deleteUser };
