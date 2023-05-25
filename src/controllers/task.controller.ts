@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { AppDatasource } from "../models/datasource";
 import { TaskEntity } from "../models/task.entity";
-import { taskValidation } from "../utils/validation";
+import { taskUpdateValidation, taskValidation } from "../utils/validation";
 import { UserEntity } from "../models/user.entity";
 
 const taskRepository = AppDatasource.getRepository(TaskEntity);
@@ -26,8 +26,13 @@ const getAllTask = async (req: Request, res: Response) => {
 
 // Get Single Task
 const getTask = async (req: Request, res: Response) => {
-  const task = await taskRepository.findOneBy({
-    id: Number(req.params.id),
+  const task = await taskRepository.findOne({
+    where: {
+      id: Number(req.params.id),
+    },
+    relations: {
+      user: true,
+    },
   });
   if (!task) {
     return res.status(400).json({ msg: `Task not found` });
@@ -65,13 +70,24 @@ const postTask = async (req: userRequest, res: Response) => {
 const updateTask = async (req: Request, res: Response) => {
   try {
     // validation
-    const { error, value } = await taskValidation.validateAsync(req.body);
+    const { error, value } = await taskUpdateValidation.validateAsync(req.body);
     if (error) {
       return res.status(400).json({ msg: `Validation failed..` });
     } else {
-      const task: any = await taskRepository.findOneBy({
-        id: Number(req.params.id),
+      // @ts-ignore
+      const userId = req.user.id;
+      const task: any = await taskRepository.findOne({
+        where: {
+          id: Number(req.params.id),
+        },
+        relations: {
+          user: true,
+        },
       });
+      const user = await authRepository.findOneBy({
+        id: userId,
+      });
+      console.log(user);
 
       if (!task) {
         return res
@@ -82,6 +98,11 @@ const updateTask = async (req: Request, res: Response) => {
       task.name = req.body.name;
       task.description = req.body.description;
 
+      console.log(task.user.id);
+
+      if (!(task.user.id === user.id)) {
+        return res.status(400).json(`Unauthorized user..`);
+      }
       await taskRepository.save(task);
       console.log(`Updated task with id ${req.params.id}`);
       return res.status(200).json(task);
@@ -95,14 +116,31 @@ const updateTask = async (req: Request, res: Response) => {
 // Delete Task
 const deleteTask = async (req: Request, res: Response) => {
   try {
-    const task: any = await taskRepository.findOneBy({
-      id: Number(req.params.id),
+    const task: any = await taskRepository.findOne({
+      where: {
+        id: Number(req.params.id),
+      },
+      relations: {
+        user: true,
+      },
+    });
+
+    // @ts-ignore
+    const userId = req.user.id;
+    const user = await authRepository.findOne({
+      where: {
+        id: userId,
+      },
     });
 
     if (!task) {
       return res
         .status(400)
         .json({ msg: `Unable to find task with id:${req.body.id}` });
+    }
+
+    if (!(task.user.id === user.id)) {
+      return res.status(400).json(`Unauthorized user..`);
     }
     await taskRepository.remove(task);
     console.log(`Deleted task with id: ${req.params.id}`);

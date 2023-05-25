@@ -8,7 +8,6 @@ const adminMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.user);
   if (!req.user.role.includes("admin")) {
     return res
       .status(401)

@@ -5,6 +5,11 @@ const taskValidation = Joi.object({
   description: Joi.string().min(10).required(),
 });
 
+const taskUpdateValidation = Joi.object({
+  name: Joi.string().min(5),
+  description: Joi.string().min(10),
+});
+
 const signinValidation = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
@@ -19,4 +24,9 @@ const signupValidation = Joi.object({
   role: Joi.string().required(),
 });
 
-export { taskValidation, signinValidation, signupValidation };
+export {
+  taskValidation,
+  taskUpdateValidation,
+  signinValidation,
+  signupValidation,
+};

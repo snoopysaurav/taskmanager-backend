@@ -98,7 +98,7 @@ const signin = async (req: Request, res: Response) => {
 };
 
 // Get All SignedUp Users
-const getUsers = async (req: Request, res: Response) => {
+const getAllUser = async (req: Request, res: Response) => {
   try {
     const user = await AuthRepository.find();
     if (!user.length) {
@@ -110,4 +110,50 @@ const getUsers = async (req: Request, res: Response) => {
   }
 };
 
-export { signin, signup, getUsers };
+// Get Single User
+
+const getUser = async (req: Request, res: Response) => {
+  try {
+    const user = await AuthRepository.findOne({
+      where: {
+        // @ts-ignore
+        id: req.params.id,
+      },
+      relations: {
+        task: true,
+      },
+    });
+    if (!user)
+      return res
+        .status(400)
+        .json(`Unable to find user with id:${req.params.id}`);
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({ msg: `Unexpected error occured` });
+  }
+};
+
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const user = await AuthRepository.findOne({
+      where: {
+        // @ts-ignore
+        id: req.params.id,
+      },
+    });
+    if (!user)
+      return res
+        .status(400)
+        .json(`Unable to find user with id:${req.params.id}`);
+
+    await AuthRepository.remove(user);
+    return res.status(200).json({
+      msg: `Deleted user`,
+      user: user,
+    });
+  } catch (error) {
+    return res.status(500).json({ msg: `Unexpected error occured` });
+  }
+};
+
+export { signin, signup, getAllUser, getUser };
