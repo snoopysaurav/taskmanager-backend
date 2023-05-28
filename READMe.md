@@ -1,4 +1,3 @@
-
 # Taskmanager
 
 Taskmanager is a backend project which consist of following features:
@@ -6,7 +5,6 @@ Taskmanager is a backend project which consist of following features:
 - Signup and Signin
 - Role based Authorization
 - Create, Read, Update, Delete task
-
 
 ## Run Locally
 
@@ -34,23 +32,21 @@ Start the server
   npm run dev
 ```
 
-
 ## Environment variables
 
 ```
 # Server
-PORT = 
+PORT =
 
 # DB Config
-DB_HOST= 
-DB_USERNAME= 
-DB_PASSWORD= 
-DB_NAME= 
+DB_HOST=
+DB_USERNAME=
+DB_PASSWORD=
+DB_NAME=
 
 # JWT
 JWT_SECRET=
 ```
-
 
 ## API Reference
 
@@ -69,18 +65,15 @@ JWT_SECRET=
 #### Get task
 
 ```http
-  GET /api/task/
+  GET /task/
 ```
 
 #### Get single task
 
 ```http
-  GET /api/task/${id}
+  GET /task/${id}
 ```
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `number` | **Required**. Id of item to fetch |
-
-
-
